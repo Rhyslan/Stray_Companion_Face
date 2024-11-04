@@ -1,7 +1,7 @@
 import pygame
 
 
-class SpriteSheet():
+class SpriteSheet:
     def __init__(self, image, frame_count):
         self.sheet = image
         self.frame_count = frame_count
