@@ -19,7 +19,7 @@ except pygame.error:
 bg = pygame.image.load("../images/Blue_Background.png")
 bg.set_alpha(200)
 fg = pygame.image.load("../images/Pixel_Cells.png")
-fg.set_alpha(50)
+fg.set_alpha(40)
 
 idle = SpriteSheet(pygame.image.load("../images/default_idle.png"), 32)
 normal_talk = SpriteSheet(pygame.image.load("../images/normal_talking.png"), 8)
@@ -73,7 +73,7 @@ while running:
             talking.stop()
             happy_talking.stop()
             annoyed_talking.stop()
-        elif joystick.get_button(2):    # BYButton - annoyed animation
+        elif joystick.get_button(2):    # Y Button - annoyed animation
             face = annoyed
             is_happy = False
             is_annoyed = True
