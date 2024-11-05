@@ -7,7 +7,7 @@ CONTROLLER_INPUT = True
 
 # Pygame Setup
 pygame.init()
-screen = pygame.display.set_mode((1024, 600), pygame.NOFRAME)
+screen = pygame.display.set_mode((600, 1024), pygame.NOFRAME)
 clock = pygame.time.Clock()
 try:
     joystick = pygame.joystick.Joystick(0)
@@ -16,10 +16,10 @@ except pygame.error:
     CONTROLLER_INPUT = False
 
 # Sprites
-bg = pygame.image.load("../images/Blue_Background.png")
-bg.set_alpha(200)
-fg = pygame.image.load("../images/Pixel_Cells.png")
-fg.set_alpha(40)
+blue_tint = pygame.image.load("../images/Blue_Background_Vertical.png")
+blue_tint.set_alpha(200)
+pixels = pygame.image.load("../images/Pixel_Cells_Vertical.png")
+pixels.set_alpha(40)
 
 idle = SpriteSheet(pygame.image.load("../images/default_idle.png"), 32)
 normal_talk = SpriteSheet(pygame.image.load("../images/normal_talking.png"), 8)
@@ -31,7 +31,7 @@ annoyed_talk = SpriteSheet(pygame.image.load("../images/annoyed_talk.png"), 8)
 
 # SFX
 happy_talking = pygame.mixer.Sound("../audio/happy_talking.ogg")
-talking = pygame.mixer.Sound("../audio/talking.ogg")
+normal_talking = pygame.mixer.Sound("../audio/talking.ogg")
 annoyed_talking = pygame.mixer.Sound("../audio/annoyed.ogg")
 
 # General Variables
@@ -46,7 +46,7 @@ while running:
         if event.type == pygame.QUIT:
             running = False
 
-    screen.blit(bg, (0, 0))
+    screen.blit(blue_tint, (0, 0))
 
     # region Controller Input
     if CONTROLLER_INPUT:
@@ -56,28 +56,28 @@ while running:
             face = idle
             is_happy = False
             is_annoyed = False
-            talking.stop()
+            normal_talking.stop()
             happy_talking.stop()
             annoyed_talking.stop()
         elif joystick.get_button(0):    # X Button - smile (small smile) animation
             face = smile
             is_happy = False
             is_annoyed = False
-            talking.stop()
+            normal_talking.stop()
             happy_talking.stop()
             annoyed_talking.stop()
         elif joystick.get_button(1):    # A Button - happy (big smile) animation
             face = happy
             is_happy = True
             is_annoyed = False
-            talking.stop()
+            normal_talking.stop()
             happy_talking.stop()
             annoyed_talking.stop()
         elif joystick.get_button(2):    # Y Button - annoyed animation
             face = annoyed
             is_happy = False
             is_annoyed = True
-            talking.stop()
+            normal_talking.stop()
             happy_talking.stop()
             annoyed_talking.stop()
         elif joystick.get_button(6):    # +(Plus/Start) Button - talking animation with sfx
@@ -92,7 +92,7 @@ while running:
             else:
                 face = normal_talk
                 if not pygame.mixer.Channel(0).get_busy():
-                    talking.play(-1)
+                    normal_talking.play(-1)
         elif joystick.get_button(16):   # R Button - silent talking animation
             if is_happy:
                 face = happy_talk
@@ -110,28 +110,28 @@ while running:
         face = idle
         is_happy = False
         is_annoyed = False
-        talking.stop()
+        normal_talking.stop()
         happy_talking.stop()
         annoyed_talking.stop()
     elif keys[pygame.K_2]:              # Smile (small smile) animation
         face = smile
         is_happy = False
         is_annoyed = False
-        talking.stop()
+        normal_talking.stop()
         happy_talking.stop()
         annoyed_talking.stop()
     elif keys[pygame.K_3]:              # Happy (big smile) animation
         face = happy
         is_happy = True
         is_annoyed = False
-        talking.stop()
+        normal_talking.stop()
         happy_talking.stop()
         annoyed_talking.stop()
     elif keys[pygame.K_4]:              # Annoyed animation
         face = annoyed
         is_happy = False
         is_annoyed = True
-        talking.stop()
+        normal_talking.stop()
         happy_talking.stop()
         annoyed_talking.stop()
     elif keys[pygame.K_5]:              # Talking animation with sfx
@@ -146,7 +146,7 @@ while running:
         else:
             face = normal_talk
             if not pygame.mixer.Channel(0).get_busy():
-                talking.play(-1)
+                normal_talking.play(-1)
     elif keys[pygame.K_SPACE]:          # Silent talking animation
         if is_happy:
             face = happy_talk
@@ -159,13 +159,13 @@ while running:
 
     if face == idle:
         if random.randint(0, 25) == 0 and (sprite_index < 15 or sprite_index > 28):
-            screen.blit(face.get_image(25, 64, 64, 8, (0, 0, 0)), (256, 44))
+            screen.blit(face.get_image(25, 64, 64, 8, (0, 0, 0)), (44, 256))
         else:
-            screen.blit(face.get_image(sprite_index, 64, 64, 8, (0, 0, 0)), (256, 44))
+            screen.blit(face.get_image(sprite_index, 64, 64, 8, (0, 0, 0)), (44, 256))
     else:
-        screen.blit(face.get_image(sprite_index, 64, 64, 8, (0, 0, 0)), (256, 44))
+        screen.blit(face.get_image(sprite_index, 64, 64, 8, (0, 0, 0)), (44, 256))
 
-    screen.blit(fg, (0, 0))
+    screen.blit(pixels, (0, 0))
 
     if sprite_index < face.frame_count - 1:
         sprite_index += 1
